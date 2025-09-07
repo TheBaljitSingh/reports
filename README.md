@@ -1,4 +1,9 @@
+
+
 # NGO Reports Management System
+<img width="1248" height="896" alt="image" src="https://github.com/user-attachments/assets/8fd6d8b1-4035-4783-83c4-195730371d5d" />
+[screen-capture.webm](https://github.com/user-attachments/assets/613d9aa5-f6cb-4a5c-aa25-6352f1362457)
+
 
 A scalable web application for NGOs to submit monthly reports individually or in bulk, with an admin dashboard for tracking and summarizing data.
 
