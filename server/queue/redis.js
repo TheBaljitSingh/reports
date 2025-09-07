@@ -1,7 +1,9 @@
 import IORedis from "ioredis";
 
 export const redisClient = new IORedis({
-    host: 'localhost',
-    port: 6379,
+    host: process.env.REDIS_ENDPOINT,
+    port: REDIS_PORT,
+    password: REDIS_PASSWORD,
+    tls:{},
     maxRetriesPerRequest: null, 
 });
