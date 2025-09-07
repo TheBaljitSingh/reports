@@ -13,4 +13,4 @@ const ngoSchema = new mongoose.Schema({
     }
 },{timestamps:true});
 
-export default mongoose.model('NGO', ngoSchema);
+export default mongoose.model('Ngo', ngoSchema);

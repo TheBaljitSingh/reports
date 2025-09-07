@@ -4,7 +4,7 @@ const reportSchema = new mongoose.Schema({
 
     ngoId:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"NGO",
+        ref:"Ngo",
         require:true
     },
     month:{ //yyyy-mm

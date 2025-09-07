@@ -2,14 +2,25 @@ import { configDotenv } from "dotenv";
 import express from "express";
 import { connectDB } from "./config/db.js";
 import {connectCloudinary} from "./utils/cloudinary.js"
+import cors from "cors";
+
 configDotenv();
 
 
 
 const app = express();
-app.use(express.json());
 
 const port = process.env.PORT || 3000;
+
+const corsOptions = {
+    origin: process.env.FRONTEND_URL, // Allow only requests from this origin
+    methods: 'GET,POST, PUT, DELETE', // Allow only these methods
+    // credentials: true 
+};
+
+app.use(cors("*"));
+
+app.use(express.json());
 
 connectDB();
 connectCloudinary();
