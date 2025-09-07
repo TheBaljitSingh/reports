@@ -12,7 +12,7 @@ export default function Navbar() {
       {/* Right Side Icons */}
       <div className="flex gap-4">
         <a
-          href="https://github.com/yourusername"
+          href="https://github.com/TheBaljitSingh/reports"
           target="_blank"
           rel="noopener noreferrer"
           className=" hover:text-gray-300 transition"
@@ -20,7 +20,7 @@ export default function Navbar() {
           <FaGithub size={24} />
         </a>
         <a
-          href="https://linkedin.com/in/yourusername"
+          href="https://www.linkedin.com/in/thebaljitsingh"
           target="_blank"
           rel="noopener noreferrer"
           className=" hover:text-gray-300 transition"
