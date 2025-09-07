@@ -15,6 +15,9 @@ A scalable web application for NGOs to submit monthly reports individually or in
 - **BullMQ** with **Redis** for background job processing
 - **Cloudinary** for file storage
 - **Multer** for file uploads
+# Backend Design
+<img width="1354" height="605" alt="image" src="https://github.com/user-attachments/assets/38137a64-e47f-455f-94dd-9ed4a9e99b0a" />
+
 
 ### Frontend
 - **React.js** with modern hooks
