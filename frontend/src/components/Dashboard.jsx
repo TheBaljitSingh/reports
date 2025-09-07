@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 const Dashboard = () => {
   const [selectedMonth, setSelectedMonth] = useState('');
@@ -8,6 +9,8 @@ const Dashboard = () => {
   const [message, setMessage] = useState('');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const {dummyToken} = useAuth();
+  console.log(dummyToken);
  
   // Generate month options for last 12 months
   const generateMonthOptions = () => {
@@ -34,8 +37,7 @@ const Dashboard = () => {
       if (month) params.set('month', month);
       params.set('page', String(pageParam));
       params.set('limit', String(limitParam));
-      const url = `/api/v1/dashboard?${params.toString()}`;
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND}${url}`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND}/api/v1/dashboard`, {headers:{token:dummyToken}});
       setDashboardData(response.data);
     } catch (error) {
       setMessage({

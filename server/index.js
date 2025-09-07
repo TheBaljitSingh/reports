@@ -3,22 +3,23 @@ import express from "express";
 import { connectDB } from "./config/db.js";
 import {connectCloudinary} from "./utils/cloudinary.js"
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
-configDotenv();
 
-
+configDotenv({path:'.env'});
 
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 const corsOptions = {
     origin: process.env.FRONTEND_URL, // Allow only requests from this origin
     methods: 'GET,POST, PUT, DELETE', // Allow only these methods
-    // credentials: true 
+    credentials: true  //allowing cookies to be sent
 };
 
-app.use(cors("*"));
+app.use(cors(corsOptions));
+app.use(cookieParser());
 
 app.use(express.json());
 
@@ -33,9 +34,11 @@ app.get("/test", async(req, res)=>{
 
 import reportRoute from "./routes/reportRoutes.js";
 import ngoRoute from "./routes/ngoRoutes.js";
+import userRoute from "./routes/userRoutes.js"
 
 app.use("/api/v1", reportRoute);
 app.use("/api/v1", ngoRoute);
+app.use("/api/v1/auth/", userRoute);
 
 
 app.listen(port,(err)=>{
