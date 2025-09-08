@@ -13,10 +13,12 @@ if (process.env.NODE_ENV !== "production") {
 
 export const redisClient = () => {
   console.log("Connecting to Redis:", process.env.REDIS_URL);
-  return new IORedis(process.env.REDIS_URL,{
-     maxRetriesPerRequest: null,
-    tls: process.env.REDIS_URL.startsWith("rediss://") ? {} : undefined,
-
+    return new IORedis({
+    port: process.env.REDIS_PORT,
+    host: process.env.REDIS_HOST,
+    password: process.env.REDIS_PASSWORD,
+    maxRetriesPerRequest: null,
+    tls: {}, // required for Redis Cloud
   });
 
 };
