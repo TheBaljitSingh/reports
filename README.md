@@ -10,6 +10,7 @@ A scalable web application for NGOs to submit monthly reports individually or in
 ## Tech Stack
 
 ### Backend
+ - server link: https://reports-7qdt.onrender.com
 - **Node.js** with **Express.js**
 - **MongoDB** with **Mongoose** for database
 - **BullMQ** with **Redis** for background job processing
@@ -20,6 +21,7 @@ A scalable web application for NGOs to submit monthly reports individually or in
 
 
 ### Frontend
+- frontend link: https://reports-blue-pi.vercel.app/
 - **React.js** with modern hooks
 - **Axios** for API calls
 - **CSS3** for styling
@@ -47,7 +49,7 @@ A scalable web application for NGOs to submit monthly reports individually or in
 ## API Endpoints
 
 ### postman
-
+https://drive.google.com/file/d/1P38wGDYFsjHYdkkus4CZrnO_UQTIIFOK/view?usp=sharing
 
 ### Reports
 - `POST /api/v1/report` - Submit single report
