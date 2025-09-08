@@ -16,5 +16,6 @@ export const redisClient = () => {
   return new IORedis(process.env.REDIS_URL,{
      maxRetriesPerRequest: null,
   });
+  
 };
 
