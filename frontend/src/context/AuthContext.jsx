@@ -27,8 +27,16 @@ export function AuthProvider({children}){
     }
   };
 
+  const testApi = async ()=>{
+      const {data}  = await axios.get(`${import.meta.env.VITE_BACKEND}/test`); // backend route to return user info
+      console.log(data);
+
+  }
+
   useEffect(() => {
     // fetchUser();
+    testApi(); //just to server awake up
+
   }, []);
 
 
