@@ -35,13 +35,6 @@ A scalable web application for NGOs to submit monthly reports individually or in
 - **Database Idempotency**: Prevents duplicate reports from same NGO/month
 - **Error Handling**: Graceful handling of partial failures in CSV processing
 
-### 📊 Dashboard Features
-- Total NGOs reporting
-- Total people helped
-- Total events conducted
-- Total funds utilized
-- Month-based filtering
-- Recent reports table
 
 ## Setup Instructions
 
@@ -50,65 +43,11 @@ A scalable web application for NGOs to submit monthly reports individually or in
 - MongoDB
 - Redis server
 
-### Backend Setup
-
-1. **Clone and navigate to server directory:**
-   ```bash
-   cd server
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Environment Variables:**
-   Create a `.env` file in the server directory:
-   ```env
-   MONGO_URI=mongodb://localhost:27017/ngo-reports
-   PORT=3000
-   CLOUDINARY_CLOUD_NAME=your_cloudinary_name
-   CLOUDINARY_API_KEY=your_cloudinary_key
-   CLOUDINARY_API_SECRET=your_cloudinary_secret
-   ```
-
-4. **Start Redis server:**
-   ```bash
-   redis-server
-   ```
-
-5. **Start MongoDB:**
-   ```bash
-   mongod
-   ```
-
-6. **Run the server:**
-   ```bash
-   npm start
-   ```
-
-### Frontend Setup
-
-1. **Navigate to frontend directory:**
-   ```bash
-   cd frontend
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Start the frontend:**
-   ```bash
-   npm start
-   ```
-
-4. **Access the application:**
-   - Frontend: http://localhost:3001
-   - Backend API: http://localhost:3000
 
 ## API Endpoints
+
+### postman
+
 
 ### Reports
 - `POST /api/v1/report` - Submit single report
