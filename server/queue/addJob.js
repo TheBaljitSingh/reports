@@ -1,8 +1,8 @@
 import { Queue } from "bullmq";
-import { redisClient } from "./redis";
+import { redisClient } from "./redis.js";
 
 const queue = new Queue("reportQueue", {
-  connection: redisClient,
+  connection: redisClient(),
 });
 
 const run = async () => {
