@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 const ReportForm = () => {
   const [formData, setFormData] = useState({
-    ngoId: '',
+    ngoId: '68bb2151998ad3d67e1d8d71',
     month: '',
     peopleHelped: '',
     eventsConducted: '',
