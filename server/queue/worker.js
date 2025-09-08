@@ -109,7 +109,7 @@ const worker = new Worker("reportQueue", async (job) => {
 
     }
 
-}, { connection: redisClient });//will take as connection for redis
+}, { connection: redisClient() });//will take as connection for redis
 
 worker.on("ready", () => {
     console.log("worker is started");

@@ -13,6 +13,10 @@ if (process.env.NODE_ENV !== "production") {
 
 export const redisClient= ()=> {
 
-    return new IORedis(process.env.REDIS_URL);
+    return new IORedis(process.env.REDIS_URL, {
+        // Required by BullMQ to avoid request timeouts during blocking operations
+        maxRetriesPerRequest: null,
+        tls: false,
+    });
 
 }
