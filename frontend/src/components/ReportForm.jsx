@@ -62,7 +62,7 @@ const ReportForm = () => {
             onChange={handleChange}
             required
             placeholder="Enter NGO ID"
-            className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+            className="mt-2 p-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
           />
         </div>
 
@@ -75,7 +75,7 @@ const ReportForm = () => {
             value={formData.month}
             onChange={handleChange}
             required
-            className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+            className="mt-2 p-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
           />
         </div>
 
@@ -90,7 +90,7 @@ const ReportForm = () => {
             required
             min="0"
             placeholder="Number of people helped"
-            className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+            className="mt-2 p-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
           />
         </div>
 
@@ -105,7 +105,7 @@ const ReportForm = () => {
             required
             min="0"
             placeholder="Number of events conducted"
-            className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+            className="mt-2 p-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
           />
         </div>
 
@@ -120,7 +120,7 @@ const ReportForm = () => {
             required
             min="0"
             placeholder="Amount of funds utilized"
-            className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+            className="mt-2 p-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
           />
         </div>
 
