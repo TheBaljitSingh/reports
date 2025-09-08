@@ -15,7 +15,9 @@ export const redisClient = () => {
   console.log("Connecting to Redis:", process.env.REDIS_URL);
   return new IORedis(process.env.REDIS_URL,{
      maxRetriesPerRequest: null,
+    tls: process.env.REDIS_URL.startsWith("rediss://") ? {} : undefined,
+
   });
-  
+
 };
 
