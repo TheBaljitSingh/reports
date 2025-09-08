@@ -2,10 +2,8 @@
 
 # NGO Reports Management System
 <img width="1248" height="896" alt="image" src="https://github.com/user-attachments/assets/8fd6d8b1-4035-4783-83c4-195730371d5d" />
-[screen-capture.webm](https://github.com/user-attachments/assets/613d9aa5-f6cb-4a5c-aa25-6352f1362457)
 
-
-A scalable web application for NGOs to submit monthly reports individually or in bulk, with an admin dashboard for tracking and summarizing data.
+[Video Demo](https://github.com/user-attachments/assets/613d9aa5-f6cb-4a5c-aa25-6352f1362457)
 
 ## Tech Stack
 
@@ -110,7 +108,6 @@ ngoId,month,peopleHelped,eventsConducted,fundsUtilized
 - Aggregation pipelines for efficient dashboard data calculation
 
 ### Error Handling
-- Graceful handling of partial failures in CSV processing
 - Individual row failures don't stop the entire job
 - Detailed error logging and user feedback
 
@@ -122,14 +119,14 @@ ngoId,month,peopleHelped,eventsConducted,fundsUtilized
 ## AI Tools Used
 
 - **Cursor AI**: Used for code generation, debugging, and architectural guidance
-- **GitHub Copilot**: Assisted with boilerplate code and API implementations
+- **GitHub Copilot**: Assisted with boilerplate code and API bug fixing
+- **ChatGPT**: Assist in small syntax error
 
 ## Production Improvements
 
 With more time, I would implement:
 
-1. **Authentication & Authorization**: JWT-based auth for admin dashboard
-2. **Input Validation**: Comprehensive validation middleware
+1. **Authentication & Authorization**: cookie(dynamically) auth for admin dashboard
 3. **Rate Limiting**: Prevent API abuse
 4. **Logging**: Structured logging with Winston
 5. **Monitoring**: Health checks and metrics
@@ -146,8 +143,5 @@ The application provides:
 - Real-time progress tracking for bulk uploads
 - Comprehensive dashboard with filtering
 - Error handling and user feedback
-- Mobile-friendly design
 
-## License
 
-This project is created for the SDE I/II Take Home Assignment.
