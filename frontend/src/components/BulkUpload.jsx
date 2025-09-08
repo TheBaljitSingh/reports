@@ -41,6 +41,7 @@ const BulkUpload = () => {
         toast.success("File uploaded successfully! Processing...")
       }
     } catch (error) {
+      console.log(error);
       toast.error("Error while uploading file")
       
     } finally {
