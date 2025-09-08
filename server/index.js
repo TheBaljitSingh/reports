@@ -5,6 +5,14 @@ import {connectCloudinary} from "./utils/cloudinary.js"
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
+//routes
+import reportRoute from "./routes/reportRoutes.js";
+import ngoRoute from "./routes/ngoRoutes.js";
+import userRoute from "./routes/userRoutes.js"
+
+//dot scalable, if need then deploy it seprately and connect to redis and scale horizontally 
+import "./queue/worker.js"
+
 
 configDotenv({path:'.env'});
 
@@ -26,15 +34,15 @@ app.use(express.json());
 connectDB();
 connectCloudinary();
 
+
+
 app.get("/test", async(req, res)=>{
    
     return res.status(200).json({message:"server is working fine!"});
 })
 
 
-import reportRoute from "./routes/reportRoutes.js";
-import ngoRoute from "./routes/ngoRoutes.js";
-import userRoute from "./routes/userRoutes.js"
+
 
 app.use("/api/v1", reportRoute);
 app.use("/api/v1", ngoRoute);

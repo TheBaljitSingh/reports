@@ -15,6 +15,8 @@ import { connectDB } from "../config/db.js"
 import Report from "../models/reports.js";
 await connectDB();
 
+console.log("redisClient",redisClient);
+
 const worker = new Worker("reportQueue", async (job) => {
     //only using for "process-report"
 
@@ -74,7 +76,7 @@ const worker = new Worker("reportQueue", async (job) => {
             const funds = Number(fundsUtilized);
 
             //just to simulate the delay
-            // await new Promise((resolve, reject)=>setTimeout(resolve, 3000));
+            await new Promise((resolve, reject)=>setTimeout(resolve, 3000));
           
 
         try {

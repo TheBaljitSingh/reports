@@ -6,7 +6,7 @@ import {redisClient} from "./redis.js"
 
 export const reportQueue = new Queue("reportQueue", {connection: redisClient});
 
-export const addJobToQueue = async(fileUrl, jobId)=>{
+export const addJobToQueue = async(fileUrl)=>{
     //taking  as file
     //check what is comming
     console.log(fileUrl);

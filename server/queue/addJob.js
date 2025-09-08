@@ -1,7 +1,8 @@
 import { Queue } from "bullmq";
+import { redisClient } from "./redis";
 
 const queue = new Queue("reportQueue", {
-  connection: { host: "127.0.0.1", port: 6379 },
+  connection: redisClient,
 });
 
 const run = async () => {

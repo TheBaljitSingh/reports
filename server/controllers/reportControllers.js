@@ -117,7 +117,6 @@ export const getDashboardData = async (req, res) => {
 export const getReportStatus = async(req, res) => {
     try {
         const {jobId} = req.params;
-        console.log("params",jobId);
         
         const job = await getJobStatus(jobId);        
         return res.status(200).json({...job});
