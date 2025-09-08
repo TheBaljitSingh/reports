@@ -36,16 +36,23 @@ const worker = new Worker("reportQueue", async (job) => {
                 })
             )
             .on("data", row => {
-                console.log("Row:", row); // 👀 see the keys
+                console.log("Row:", row); 
                 rows.push(row)
             })
             .on("end", resolve)
             .on("error", reject);
     });
 
+    
     const total = rows.length;
     let processed = 0;
-
+    
+    await job.updateProgress({ 
+          processed: 0, // sucessfully processed rows
+          total: total, //total row in csv
+          current: 0, //current row
+          failed: 0 // failed row
+      });
 
 
         // normalize month string into MM-YYYY
