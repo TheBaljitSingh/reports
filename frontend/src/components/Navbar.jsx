@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { FaLinkedinIn, FaGithub, FaUser } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -23,9 +24,8 @@ export default function Navbar() {
   return (
     <div className="w-full fixed top-0 left-0 flex justify-between items-center py-3 px-12 md:px-36 bg-gray-50">
       {/* Logo / Brand */}
-      <a className="text-xl font-bold" href="/">
-        Report
-      </a>
+    
+      <Link className="text-xl font-bold" to="/">Report</Link>
 
       {/* Right Side Icons */}
       <div className="flex gap-4">

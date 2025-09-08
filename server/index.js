@@ -38,6 +38,7 @@ connectCloudinary();
 
 app.get("/test", async(req, res)=>{
    
+    console.log("/test GET")
     return res.status(200).json({message:"server is working fine!"});
 })
 
