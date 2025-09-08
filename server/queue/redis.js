@@ -12,13 +12,22 @@ if (process.env.NODE_ENV !== "production") {
 // env is not wokring currently
 
 export const redisClient = () => {
-  console.log("Connecting to Redis:", process.env.REDIS_URL);
-    return new IORedis({
-    port: process.env.REDIS_PORT,
-    host: process.env.REDIS_HOST,
+  const url = process.env.REDIS_URL;
+  if (url) {
+    const isRediss = url.startsWith("rediss://");
+    return new IORedis(url, {
+      maxRetriesPerRequest: null,
+      tls: isRediss ? {} : undefined,
+    });
+  }
+
+  const useTls = String(process.env.REDIS_TLS || "false").toLowerCase() === "true";
+  return new IORedis({
+    port: process.env.REDIS_PORT ? Number(process.env.REDIS_PORT) : 6379,
+    host: process.env.REDIS_HOST || "127.0.0.1",
     password: process.env.REDIS_PASSWORD,
     maxRetriesPerRequest: null,
-    tls: {}, // required for Redis Cloud
+    tls: useTls ? {} : undefined,
   });
 
 };
