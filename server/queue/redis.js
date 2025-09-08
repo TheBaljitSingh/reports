@@ -11,12 +11,10 @@ if (process.env.NODE_ENV !== "production") {
 }
 // env is not wokring currently
 
-export const redisClient= ()=> {
+export const redisClient = () => {
+  console.log("Connecting to Redis:", process.env.REDIS_URL,{
+     maxRetriesPerRequest: null,
+  });
+  return new IORedis(process.env.REDIS_URL);
+};
 
-    return new IORedis(process.env.REDIS_URL, {
-        // Required by BullMQ to avoid request timeouts during blocking operations
-        maxRetriesPerRequest: null,
-        tls: false,
-    });
-
-}
