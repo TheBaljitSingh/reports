@@ -36,9 +36,21 @@ const BulkUpload = () => {
         },
       });
       if(response.status===200){ 
-        setJobId(response.data.jobId);
-        setMessage({type:'success', text:`Processing this JobId: ${response.data.jobId}`})
+        const newJobId = response.data.jobId;
+        setJobId(newJobId);
+        setMessage({type:'success', text:`Processing this JobId: ${newJobId}`})
         toast.success("File uploaded successfully! Processing...")
+
+        // Persist jobId to localStorage for the Status page
+        try {
+          const stored = JSON.parse(localStorage.getItem('reportJobIds') || '[]');
+          if (!stored.find((j) => j.id === newJobId)) {
+            const entry = { id: newJobId, fileName: file?.name || '', createdAt: Date.now() };
+            localStorage.setItem('reportJobIds', JSON.stringify([entry, ...stored].slice(0, 50)));
+          }
+        } catch (_e) {
+          // ignore storage errors
+        }
       }
     } catch (error) {
       console.log(error);
@@ -53,24 +65,31 @@ const BulkUpload = () => {
   useEffect(() => {
     if (!jobId) return;
 
+    const startedAt = Date.now();
     const pollInterval = setInterval(async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND}/api/v1/job-status/${jobId}`);
         const jobData = response.data;
-        
         setProgress(jobData.progress);
-        
+
         if (jobData.status === 'completed') {
-          setMessage({ 
-            type: 'success', 
-            text: `JobId: ${jobId} | Processing completed! ${jobData.progress?.processed || 0} rows processed successfully.` 
+          setMessage({
+            type: 'success',
+            text: `JobId: ${jobId} | Processing completed! ${jobData.progress?.processed || 0} rows processed successfully.`
           });
           clearInterval(pollInterval);
-        } else if (jobData.status === 'failed') {
-          setMessage({ 
-            type: 'error', 
-            text: 'Processing failed. Please try again.' 
-          });
+          return;
+        }
+
+        if (jobData.status === 'failed') {
+          setMessage({ type: 'error', text: 'Processing failed. Please try again.' });
+          clearInterval(pollInterval);
+          return;
+        }
+
+        // Stop polling after 60 seconds
+        if (Date.now() - startedAt >= 60000) {
+          setMessage({ type: 'info', text: 'Auto-polling stopped after 1 minute. Check status again if needed.' });
           clearInterval(pollInterval);
         }
       } catch (error) {

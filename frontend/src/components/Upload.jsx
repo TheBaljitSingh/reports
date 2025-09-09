@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import ReportForm from './ReportForm'
 import BulkUpload from './BulkUpload'
+import CheckStatus from "./CheckStatus"
 
 export default function Upload() {
   const [activeTab, setActiveTab] = useState('single')
@@ -29,15 +30,22 @@ export default function Upload() {
             >
               CSV Bulk Upload
             </button>
+                <button
+              type="button"
+              onClick={() => setActiveTab('status')}
+              className={`px-5 py-3 text-sm font-medium transition-colors ${activeTab === 'status' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+            >
+              Check Status
+            </button>
           </div>
 
           <div className="p-6 md:p-8">
             <div className="max-h-[65vh] overflow-auto">
               {activeTab === 'single' ? (
                 <ReportForm />
-              ) : (
+              ) : activeTab==='bulk'?(
                 <BulkUpload />
-              )}
+              ):(<CheckStatus/>)}
             </div>
           </div>
         </div>

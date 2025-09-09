@@ -20,7 +20,6 @@ export function AuthProvider({children}){
       setUser(data.user);
     } catch(err) {
       console.log(err);
-      // toast.error(err?.message)
       setUser(null);
     } finally {
       setLoading(false);

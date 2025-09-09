@@ -47,7 +47,6 @@ const Dashboard = () => {
     }
   };
 
-  console.log(selectedMonth);
 
   useEffect(() => {
     fetchDashboardData(selectedMonth, page, limit);
