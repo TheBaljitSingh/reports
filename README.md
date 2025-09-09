@@ -3,7 +3,8 @@
 # NGO Reports Management System
 <img width="1248" height="896" alt="image" src="https://github.com/user-attachments/assets/8fd6d8b1-4035-4783-83c4-195730371d5d" />
 
-[Video Demo](https://github.com/user-attachments/assets/613d9aa5-f6cb-4a5c-aa25-6352f1362457)
+[Video Demo](https://github.com/user-attachments/assets/68cded9e-212f-405f-991d-b1835e5c19e1)
+
 
 ## Tech Stack
 
