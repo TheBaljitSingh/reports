@@ -38,7 +38,7 @@ const Dashboard = () => {
       if (month) params.set('month', month);
       params.set('page', String(pageParam));
       params.set('limit', String(limitParam));
-      const response = await api.get(`/api/v1/dashboard`);
+      const response = await api.get(`/api/v1/dashboard?page=${page}&limit=${limit}`);
       setDashboardData(response.data);
     } catch (error) {
       console.log(error);
