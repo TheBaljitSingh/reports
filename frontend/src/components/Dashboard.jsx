@@ -18,7 +18,7 @@ const Dashboard = () => {
     const currentDate = new Date();
     for (let i = 0; i < 12; i++) {
       const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
-      const monthValue = date.toISOString().slice(0, 7);
+      const monthValue = date.toISOString().slice(0, 7).split('-').reverse().join('-');
       const monthLabel = date.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
@@ -38,7 +38,7 @@ const Dashboard = () => {
       if (month) params.set('month', month);
       params.set('page', String(pageParam));
       params.set('limit', String(limitParam));
-      const response = await api.get(`/api/v1/dashboard?page=${page}&limit=${limit}`);
+      const response = await api.get(`/api/v1/dashboard?page=${page}&limit=${limit}&month=${month}`);
       setDashboardData(response.data);
     } catch (error) {
       console.log(error);
@@ -46,6 +46,8 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
+
+  console.log(selectedMonth);
 
   useEffect(() => {
     fetchDashboardData(selectedMonth, page, limit);
