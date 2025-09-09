@@ -65,7 +65,7 @@ try {
 
 export const getDashboardData = async (req, res) => {
     try {
-        const { month, page=1, limit=1 } = req.query;
+        const { month, page=1, limit=10 } = req.query;
 
         const offset = (page-1)*limit;        
 
