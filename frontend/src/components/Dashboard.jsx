@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import api from '../api/api';
 
 const Dashboard = () => {
   const [selectedMonth, setSelectedMonth] = useState('');
@@ -28,6 +29,7 @@ const Dashboard = () => {
   };
 
   const fetchDashboardData = async (month = '', pageParam = 1, limitParam = 10) => {
+
     setLoading(true);
     setMessage('');
 
@@ -39,10 +41,7 @@ const Dashboard = () => {
       const response = await api.get(`/api/v1/dashboard`);
       setDashboardData(response.data);
     } catch (error) {
-      setMessage({
-        type: 'error',
-        text: error.response?.data?.message || 'Error fetching dashboard data',
-      });
+      console.log(error);
     } finally {
       setLoading(false);
     }
