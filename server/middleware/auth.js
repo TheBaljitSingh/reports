@@ -5,7 +5,8 @@ export const isAuthenticated = async(req, res, next)=>{
 
     try {
         //takin from header also
-        const token = req.cookies.token || req.headers['token']; //directly taking from the cookeis
+        const token = req.cookies.token || req.headers['token'].split(" ")[1]; //taking bearer token
+        console.log(token);
 
         if(!token){
             return res.status(401).json({ message: "Unauthorized, no token provided" });

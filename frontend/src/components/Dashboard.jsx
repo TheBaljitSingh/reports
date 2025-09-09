@@ -9,8 +9,7 @@ const Dashboard = () => {
   const [message, setMessage] = useState('');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const {dummyToken} = useAuth();
-  console.log(dummyToken);
+
  
   // Generate month options for last 12 months
   const generateMonthOptions = () => {
@@ -37,7 +36,7 @@ const Dashboard = () => {
       if (month) params.set('month', month);
       params.set('page', String(pageParam));
       params.set('limit', String(limitParam));
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND}/api/v1/dashboard`, {headers:{token:dummyToken}});
+      const response = await api.get(`/api/v1/dashboard`);
       setDashboardData(response.data);
     } catch (error) {
       setMessage({
@@ -65,7 +64,7 @@ const Dashboard = () => {
       <h2 className="text-2xl font-semibold mb-6">Admin Dashboard</h2>
 
       {/* Filters */}
-      <div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
       <div className="bg-white shadow rounded-lg p-4 mb-6">
         <h3 className="text-lg font-medium mb-4">Filters</h3>
