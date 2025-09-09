@@ -59,6 +59,7 @@ export function AuthProvider({children}){
 
   const logout = async () => {
     localStorage.removeItem("token"); //clear the token 
+    await api.post("/api/v1/auth/logout");
     // await axios.post(`${import.meta.env.VITE_BACKEND}/api/v1/auth/logout`, {}, { headers:{token:dummyToken} });
     setUser(null);
   };
