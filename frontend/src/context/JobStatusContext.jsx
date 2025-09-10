@@ -9,6 +9,7 @@ export function JobStatusProvider({ children }) {
   const [isFetching, setisFetching] = useState(false);
   const [buttonState, setButtonState] = useState('check'); // 'check', 'checking', 'stop'
   const eventSourceRef = useRef(null);
+  const [message, setMessage] = useState();
 
   const startFetching = (jobId) => {
     // Stop any existing Fetching
@@ -37,6 +38,15 @@ export function JobStatusProvider({ children }) {
         eventSource.close();
         setisFetching(false);
         setButtonState('check');
+      }
+      if(data.status==='not_found'){
+        eventSource.close();
+        setisFetching(false)
+        setButtonState("check")
+        setStatus(null);
+        setMessage({type:"error", text:"Job Id not found"});
+
+        
       }
     };
 
@@ -74,6 +84,7 @@ export function JobStatusProvider({ children }) {
     return 'Check';
   };
 
+ 
   const getButtonState = () => {
     if (isFetching) {
       return buttonState === 'checking' ? 'checking' : 'stop';
@@ -89,7 +100,9 @@ export function JobStatusProvider({ children }) {
     buttonText: getButtonText(),
     checkJobStatus,
     stopFetching,
-    setCurrentJobId
+    setCurrentJobId,
+    message,
+    setMessage
   };
 
   return (

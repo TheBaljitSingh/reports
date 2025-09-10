@@ -11,28 +11,13 @@ export default function CheckStatus() {
     buttonText, 
     checkJobStatus, 
     stopFetching, 
-    setCurrentJobId 
+    setCurrentJobId,
+    message, setMessage
   } = useJobStatus();
+
   
-  const [isMouseHover, setIsMouseHover] = useState(false);
+  const [savedJobs] = useState(JSON.parse(localStorage.getItem('reportJobIds' || [])));
 
-  // Read saved jobIds from localStorage
-  const savedJobs = useMemo(() => {
-    try {
-      return JSON.parse(localStorage.getItem('reportJobIds') || '[]');
-    } catch (_e) {
-      return [];
-    }
-  }, [status]);
-
-  const handleMouseEnter = () => {
-    setIsMouseHover(true);
-  };
-
-  const handleMouseLeave = () => {
-    console.log("mouse leave");
-    setIsMouseHover(false);
-  };
 
   const handleCheckStatus = () => {
     if (!currentJobId) return;
@@ -66,19 +51,19 @@ export default function CheckStatus() {
             placeholder='Or enter JobId...'
             className='border rounded-md px-2 py-2 text-sm flex-1'
             value={currentJobId}
-            onChange={(e)=>setCurrentJobId(e.target.value)}
+            onChange={(e)=>{
+              setMessage(null)
+              setCurrentJobId(e.target.value)
+            }}
           />
         </div>
           <button  
             onClick={handleCheckStatus}  
             type="button" 
-            className={`hover:cursor-pointer inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm disabled:opacity-50 ${
-              buttonState === 'stop' 
-                ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800' 
-                : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700'
+            className={`${buttonState} inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm disabled:opacity-50 ${
+               'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700'
             }`}
-            onMouseEnter={handleMouseEnter}  
-            onMouseLeave={handleMouseLeave}
+      
             disabled={!currentJobId}
           >  
             {buttonText}
@@ -112,6 +97,11 @@ export default function CheckStatus() {
               'text-blue-600'
             }`}>{status?.status}</span>
           </p>
+        </div>
+      )}
+         {message && (
+        <div className={`mt-4 text-sm rounded-md px-3 py-2 ${message.type === 'error' ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'}`}>
+          {message.text}
         </div>
       )}
     </div>

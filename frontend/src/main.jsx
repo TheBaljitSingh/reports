@@ -9,7 +9,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <JobStatusProvider>
+      {/* if i don't wrap thae app in provider then i try to access the provider mthod then i will get the error */}
+      <JobStatusProvider>  
         <App />
       </JobStatusProvider>
     </AuthProvider>
