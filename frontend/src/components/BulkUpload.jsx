@@ -6,7 +6,6 @@ const BulkUpload = () => {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [jobId, setJobId] = useState(null);
-  const [progress, setProgress] = useState(null);
   const [message, setMessage] = useState('');
 
   const handleFileChange = (e) => {
@@ -38,7 +37,7 @@ const BulkUpload = () => {
       if(response.status===200){ 
         const newJobId = response.data.jobId;
         setJobId(newJobId);
-        setMessage({type:'success', text:`Processing this JobId: ${newJobId}`})
+        setMessage({type:'success', text:`Processing request, you can check status using this JobId: ${newJobId}`})
         toast.success("File uploaded successfully! Processing...")
 
         // Persist jobId to localStorage for the Status page
@@ -61,44 +60,6 @@ const BulkUpload = () => {
     }
   };
 
-  // Poll for job status
-  useEffect(() => {
-    if (!jobId) return;
-
-    const startedAt = Date.now();
-    const pollInterval = setInterval(async () => {
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND}/api/v1/job-status/${jobId}`);
-        const jobData = response.data;
-        setProgress(jobData.progress);
-
-        if (jobData.status === 'completed') {
-          setMessage({
-            type: 'success',
-            text: `JobId: ${jobId} | Processing completed! ${jobData.progress?.processed || 0} rows processed successfully.`
-          });
-          clearInterval(pollInterval);
-          return;
-        }
-
-        if (jobData.status === 'failed') {
-          setMessage({ type: 'error', text: 'Processing failed. Please try again.' });
-          clearInterval(pollInterval);
-          return;
-        }
-
-        // Stop polling after 60 seconds
-        if (Date.now() - startedAt >= 60000) {
-          setMessage({ type: 'info', text: 'Auto-polling stopped after 1 minute. Check status again if needed.' });
-          clearInterval(pollInterval);
-        }
-      } catch (error) {
-        console.error('Error polling job status:', error);
-      }
-    }, 2000);
-
-    return () => clearInterval(pollInterval);
-  }, [jobId]);
 
   return (
     <div>
@@ -133,22 +94,7 @@ const BulkUpload = () => {
         </div>
       )}
 
-      {progress && (
-        <div className="mt-6">
-          <h3 className="text-sm font-medium text-gray-700">Processing Progress</h3>
-          <div className="mt-2 h-2 w-full rounded-full bg-gray-100 overflow-hidden">
-            <div 
-              className="h-2 bg-blue-600 transition-all"
-              style={{ width: `${Math.min(100, Math.round((progress.processed / progress.total) * 100))}%` }}
-            />
-          </div>
-          <p className="text-xs text-gray-500 mt-2">
-            {progress.processed} of {progress.total} rows completed
-            {progress.failed > 0 && ` (${progress.failed} failed)`}
-          </p>
-          <p className="text-xs text-gray-400">Status: {progress.current}/{progress.total}</p>
-        </div>
-      )}
+  
     </div>
   );
 };

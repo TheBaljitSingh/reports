@@ -117,9 +117,20 @@ export const getDashboardData = async (req, res) => {
 export const getReportStatus = async(req, res) => {
     try {
         const {jobId} = req.params;
+
+        res.setHeader("Content-type", "text/event-stream");
+        res.setHeader("Cache-Control", "no-cache");
+        res.setHeader("Connection","Keep-alive");
         
-        const job = await getJobStatus(jobId);        
-        return res.status(200).json({...job});
+        let job = {};
+        const interval = setInterval(async()=>{
+            job = await getJobStatus(jobId);  
+            res.write(`data: ${JSON.stringify({...job})}\n\n`); //json.stringify | going in key value pair
+        },2000);
+
+        req.on("close", ()=>clearInterval(interval));
+
+        // return res.status(200).json({...job});
 
     } catch (error) {
         console.log(error);

@@ -1,11 +1,20 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import api from '../api/api';
+import { useJobStatus } from '../context/JobStatusContext';
 
 export default function CheckStatus() {
-  const [currentJobId, setCurrentJobId] = useState('');
-  const [status, setStatus] = useState(null);
-  const [isPolling, setIsPolling] = useState(false);
-  const intervalRef = useRef(null);
+  const { 
+    currentJobId, 
+    status, 
+    isFetching, 
+    buttonState, 
+    buttonText, 
+    checkJobStatus, 
+    stopFetching, 
+    setCurrentJobId 
+  } = useJobStatus();
+  
+  const [isMouseHover, setIsMouseHover] = useState(false);
 
   // Read saved jobIds from localStorage
   const savedJobs = useMemo(() => {
@@ -16,42 +25,22 @@ export default function CheckStatus() {
     }
   }, [status]);
 
-  const fetchStatus = async ()=>{
+  const handleMouseEnter = () => {
+    setIsMouseHover(true);
+  };
+
+  const handleMouseLeave = () => {
+    console.log("mouse leave");
+    setIsMouseHover(false);
+  };
+
+  const handleCheckStatus = () => {
     if (!currentJobId) return;
-    
-    setIsPolling(true);
-    console.log("interval");
+    checkJobStatus(currentJobId);
+  };
 
-    if(intervalRef.current){
-      clearInterval(intervalRef.current);
-    }
 
-    const startTime = Date.now(); // max 1 min.
-    intervalRef.current = setInterval(async()=>{
-      try {
-        const {data} = await api.get(`/api/v1/job-status/${currentJobId}`);
-        setStatus(data);
-  
-        if(data.status==='completed' || data.status==='failed'){
-          clearInterval(intervalRef.current);
-          setIsPolling(false);
-          intervalRef.current=null;
-        }
 
-        if(Date.now() - startTime >=60 *1000){
-          clearInterval(intervalRef.current);
-          setIsPolling(false);
-        }
-      } catch (error) {
-
-        console.log(error);
-        clearInterval(intervalRef.current);
-        setIsPolling(false);
-        intervalRef.current=null;
-      }
-
-    },2000)
-  }
 
   const percent = status?.progress?.total
     ? Math.min(100, Math.round((status.progress.processed / status.progress.total) * 100))
@@ -80,24 +69,53 @@ export default function CheckStatus() {
             onChange={(e)=>setCurrentJobId(e.target.value)}
           />
         </div>
-          <button  onClick={fetchStatus} className='px-4 hover:cursor-pointer py-2 bg-gradient-to-r font-bold from-purple-600 to-indigo-600 text-white rounded-md text-sm'>Check</button>
+          <button  
+            onClick={handleCheckStatus}  
+            type="button" 
+            className={`hover:cursor-pointer inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm disabled:opacity-50 ${
+              buttonState === 'stop' 
+                ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800' 
+                : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700'
+            }`}
+            onMouseEnter={handleMouseEnter}  
+            onMouseLeave={handleMouseLeave}
+            disabled={!currentJobId}
+          >  
+            {buttonText}
+          </button>
+          
       </div>
 
-      { (
+      {status && (
         <div className='mt-6'>
           <div className='flex items-center justify-between mb-2'>
             <h3 className='text-sm font-medium text-gray-700'>Processing Progress</h3>
-            <span className='text-xs text-gray-500'>{isPolling ? 'Polling…' : 'Completed'}</span>
+            <span className='text-xs text-gray-500'>
+              {isFetching ? 'Fetching...' : (status?.status === 'completed' ? 'Completed' : status?.status === 'failed' ? 'Failed' : 'Stopped')}
+            </span>
           </div>
           <div className='mt-1 h-2 w-full rounded-full bg-gray-100 overflow-hidden'>
-            <div className='h-2 bg-blue-600 transition-all' style={{ width: `${percent}%` }} />
+            <div 
+              className={`h-2 transition-all ${
+                status?.status === 'completed' ? 'bg-green-600' : 
+                status?.status === 'failed' ? 'bg-red-600' : 
+                'bg-blue-600'
+              }`} 
+              style={{ width: `${percent}%` }} 
+            />
           </div>
           <p className='text-xs text-gray-500 mt-2'>
             {status?.progress?.processed || 0} of {status?.progress?.total || 0} rows completed
             {status?.progress?.failed > 0 && ` (${status?.progress?.failed} failed)`}
           </p>
-          <p className='text-xs text-gray-400'>Status: {status?.progress?.current || 0}/{status?.progress?.total || 0}</p>
-          <p className='text-xs mt-2'>Status: <span className='font-medium'>{status?.status}</span></p>
+          <p className='text-xs text-gray-400'>Progress: {status?.progress?.current || 0}/{status?.progress?.total || 0}</p>
+          <p className='text-xs mt-2'>
+            Status: <span className={`font-medium ${
+              status?.status === 'completed' ? 'text-green-600' : 
+              status?.status === 'failed' ? 'text-red-600' : 
+              'text-blue-600'
+            }`}>{status?.status}</span>
+          </p>
         </div>
       )}
     </div>
