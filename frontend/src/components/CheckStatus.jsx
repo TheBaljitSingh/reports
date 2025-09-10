@@ -96,11 +96,7 @@ export default function CheckStatus() {
           </div>
           <div className='mt-1 h-2 w-full rounded-full bg-gray-100 overflow-hidden'>
             <div 
-              className={`h-2 transition-all ${
-                status?.status === 'completed' ? 'bg-green-600' : 
-                status?.status === 'failed' ? 'bg-red-600' : 
-                'bg-blue-600'
-              }`} 
+              className={`h-2 transition-all bg-blue-600`} 
               style={{ width: `${percent}%` }} 
             />
           </div>
