@@ -13,6 +13,9 @@ import userRoute from "./routes/userRoutes.js"
 //dot scalable, if need then deploy it seprately and connect to redis and scale horizontally 
 import "./queue/worker.js"
 
+//importing rate limitter
+import rateLimitter from "./config/leakyBucket.js"
+
 
 configDotenv({path:'.env'});
 
@@ -28,8 +31,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(cookieParser());
-
 app.use(express.json());
+
+app.use(rateLimitter({capacity:2, leakRate:1})); 
 
 connectDB();
 connectCloudinary();
