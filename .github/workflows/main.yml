@@ -1,0 +1,113 @@
+name: CI/CD Pipeline
+
+on: 
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    branches:
+      - develop
+      - master
+
+jobs:
+# clinet build & test
+  client: 
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    steps:
+    - name: Checkout code
+      uses: action/checkout@v4
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm ci
+    - name: Run tests
+      run: npm test --if-present
+    - name: Build client
+      run: npm run build --if-present
+
+  # server build & test
+  server:
+    runs-on: ubuntu-latest
+    defaults:
+      run: 
+        working-directory: server
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: action/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+    - name: Install dependencies
+      run : npm ci
+    - name: Run tests
+      run: npm test --if-present
+    - name: Build server
+      run: npm run build --if-present
+
+  # deploy and staging
+
+  deploy-staging:
+    if: github.ref == 'refs/heads/develop'
+    needs: [client, server]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy client (staging)
+        uses: easingthemes/ssh-deploy@v4
+        with:
+          ssh-private-key: ${{ secrets.STAGING_SSH_KEY }}
+          remote-user: ${{ secrets.STAGING_USER }}
+          server-ip: ${{ secrets.STAGING_HOST }}
+          remote-path: /var/www/staging-client
+          local-path: ./client/build
+
+      - name: Deploy server (staging)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          script: |
+            cd /var/www/staging-server
+            git pull origin develop
+            npm ci --production
+            pm2 restart server
+
+
+  # Deploy on production
+  deploy-production:
+    if: github.ref == 'refs/heads/master'
+    needs: [client, server]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy client (production)
+        uses: easingthemes/ssh-deploy@v4
+        with:
+          ssh-private-key: ${{ secrets.PROD_SSH_KEY }}
+          remote-user: ${{ secrets.PROD_USER }}
+          server-ip: ${{ secrets.PROD_HOST }}
+          remote-path: /var/www/prod-client
+          local-path: ./client/build
+
+      - name: Deploy server (production)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            cd /var/www/prod-server
+            git pull origin master
+            npm ci --production
+            pm2 restart server
+  
